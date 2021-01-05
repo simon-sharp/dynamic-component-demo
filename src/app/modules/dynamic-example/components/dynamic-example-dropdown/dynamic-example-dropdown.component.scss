@@ -1,0 +1,13 @@
+.dynamic-example-dropdown {
+  &__main {
+    position: relative;
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    width: 200px;
+    border: 1px solid black;
+  }
+}

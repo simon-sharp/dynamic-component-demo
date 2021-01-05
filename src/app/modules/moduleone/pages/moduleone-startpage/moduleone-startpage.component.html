@@ -1,0 +1,13 @@
+ModuleoneStartpageComponent
+<div>
+  <div>---Dynamically Loaded from already imported Module---</div>
+  <sso-dynamic [dynamicComponent]="dynamicComponent"></sso-dynamic>
+</div>
+<div>
+  <div>---Dynamically Loaded Component from other Module---</div>
+  <sso-dynamic [dynamicComponent]="dynamicComponentFromSubmodule"></sso-dynamic>
+</div>
+<div>
+  <div>---Statically Loaded---</div>
+  <sso-moduleone-loaded></sso-moduleone-loaded>
+</div>

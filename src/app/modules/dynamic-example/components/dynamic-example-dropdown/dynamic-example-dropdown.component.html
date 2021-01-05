@@ -1,0 +1,18 @@
+<div class="dynamic-example-dropdown__main">
+  <div (click)="toggleDropdown()">Open/Close</div>
+
+  <div *ngIf="dropdownVisible" class="dynamic-example-dropdown__dropdown">
+    <div>General use</div>
+    <div *ngFor="let dropdownComponent of dropdownComponents">
+      <sso-dynamic [dynamicComponent]="dropdownComponent"></sso-dynamic>
+    </div>
+
+    <hr>
+
+    <div>Not general use</div>
+    <div>
+      <sso-dynamic-example-inserted [text]="'Entry 1-2'" style="display: block;"></sso-dynamic-example-inserted>
+      <sso-dynamic-example-inserted [text]="'Entry 2-2'" style="display: block;"></sso-dynamic-example-inserted>
+    </div>
+  </div>
+</div>
