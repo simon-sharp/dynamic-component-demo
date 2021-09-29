@@ -40,22 +40,27 @@ export class TestStartpageComponent implements OnInit {
       {
         vorname: 'Chuck',
         nachname: 'Norris',
+        movie: 'The Expandables',
       },
       {
         vorname: 'Bruce',
         nachname: 'Willis',
+        movie: 'Die hard',
       },
       {
         vorname: 'Angelina',
         nachname: 'Jolie',
+        movie: 'Lara Croft',
       },
       {
         vorname: 'Arnold',
         nachname: 'Schwarzenegger',
+        movie: 'Terminator',
       },
       {
         vorname: 'Scarlet',
         nachname: 'Johansson',
+        movie: 'Avengers',
       }
     ];
   }
