@@ -1,0 +1,29 @@
+<span class="shared-dropdown__component" #sharedDropdownComponent>
+  <span
+    (click)="toggleDropdown()"
+    class="shared-dropdown__toggle-button"
+    [ngClass]="getButtonCss()"
+  >
+    <app-shared-icon
+      *ngIf="icon && showIconLeftOfText"
+      [icon]="icon"
+      [iconType]="iconType"
+    ></app-shared-icon>
+    {{title}}
+    <app-shared-icon
+      *ngIf="icon && !showIconLeftOfText"
+      [icon]="icon"
+      [iconType]="iconType"
+    ></app-shared-icon>
+  </span>
+  <span
+    class="shared-dropdown__dropdown-components"
+    [ngStyle]="getComponentsOffsetStyle()"
+    *ngIf="showDropdown"
+    #sharedDropdownList
+  >
+    <div *ngFor="let dropdownComponent of dropdownComponents">
+      <app-shared-dynamic [dynamicComponent]="dropdownComponent"></app-shared-dynamic>
+    </div>
+  </span>
+</span>

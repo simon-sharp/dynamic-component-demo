@@ -1,0 +1,35 @@
+<div class="form--boolean--label-top" *ngIf="isLabelTop()">
+  <div class="form--boolean--label form--label" *ngIf="label">
+    {{label}} <span *ngIf="mandatory">*</span>
+  </div>
+  <div
+    class="form--boolean--description form--description"
+    *ngIf="description"
+  >
+    {{description}}
+  </div>
+</div>
+<span class="form--boolean--label-inline" *ngIf="isLabelInline()">
+  <span class="form--boolean--label form--label" *ngIf="label">
+      {{label}} <span *ngIf="mandatory">*</span>
+  </span>
+  &nbsp;
+  <span
+    class="form--boolean--description form--description"
+    *ngIf="description"
+  >
+      {{description}}
+  </span>
+  &nbsp;
+</span>
+
+<app-shared-checkbox
+  class="form--boolean--value"
+  [checked]="getCheckboxValue()"
+  (valueChanged)="onChange($event)"
+></app-shared-checkbox>
+
+<div *ngIf="mandatory && !value && this.touched">
+  {{'Das Feld darf nicht leer sein'}}
+</div>
+

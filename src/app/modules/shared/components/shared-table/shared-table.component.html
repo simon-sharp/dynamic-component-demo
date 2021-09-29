@@ -1,0 +1,291 @@
+<div title="Spalten ein- und ausblenden">
+  <app-shared-dropdown
+    *ngIf="showColumnsForSelection"
+    class="shared-table__available-columns-drop-down float-right"
+    [dropdownComponents]="availableColumnsDropDown"
+    [dropdownOpensToTheLeft]="false"
+    [icon]="getShowAvailableColumnsForSelectionIcon()"
+  ></app-shared-dropdown>
+</div>
+<div
+  [ngStyle]="getSelectionAreaStyle()"
+  (mousemove)="drawSelectionArea($event)"
+  *ngIf="selectRowsWhenDrag"
+  class="shared-table__selection-area"
+></div>
+<table
+  class="shared-table__main"
+  (mousedown)="onDrawSelectionAreaStart($event)"
+  (mousemove)="drawSelectionArea($event)"
+>
+  <thead>
+    <tr
+      *ngIf="hasNoVisibleColumns()"
+      class="shared-table__header-row"
+    >
+      <th
+        class="shared-table__no-header-column"
+        [colSpan]="calculateColSpanForRowComponent()"
+      >
+        {{noColumnsText}}
+      </th>
+    </tr>
+    <tr class="shared-table__header-row" [ngClass]="getTableHeaderRowClass()">
+      <th
+        *ngIf="rowsSelectable"
+        class="shared-table__selectable-column"
+      >
+        <app-shared-checkbox
+          [checked]="areAllEntriesSelected()"
+          [hasThreeStates]="true"
+          (valueChanged)="selectDeselectAll($event)"
+        ></app-shared-checkbox>
+      </th>
+      <ng-template ngFor let-visibleColumn [ngForOf]="columns">
+        <th
+          [ngStyle]="getHeaderStyle(visibleColumn)"
+          *ngIf="showColumn(visibleColumn)"
+          class="shared-table__header-column"
+          (mousemove)="resizeDrag($event)"
+          (mouseup)="resizeEnd()"
+        >
+          <span (click)="changeColumnSortOrder(visibleColumn)">
+            <span>
+              {{visibleColumn.title}}
+            </span>
+
+            <span
+              *ngIf="columnAllowsSorting(visibleColumn)"
+              class="shared-table__header-column-sort-icon float-right"
+            >
+              <app-shared-icon
+                *ngIf="hasNoSortOrder(visibleColumn)"
+                [icon]="getNoSortOrderIcon()"
+                [iconType]="getIconType()"
+              ></app-shared-icon>
+              <app-shared-icon
+                *ngIf="hasAscendingSortOrder(visibleColumn)"
+                [icon]="getAscendingSortOrderIcon()"
+                [iconType]="getIconType()"
+              ></app-shared-icon>
+              <app-shared-icon
+                *ngIf="hasDescendingSortOrder(visibleColumn)"
+                [icon]="getDescendingSortOrderIcon()"
+                [iconType]="getIconType()"
+              ></app-shared-icon>
+            </span>
+          </span>
+
+          <span
+            *ngIf="columnAllowsFiltering(visibleColumn)"
+            class="shared-table__header-column-filter-icon"
+          >
+            <app-shared-icon
+              [icon]="getFilterIcon()"
+              [iconType]="getIconType()"
+              (click)="toggleShowFilterSelector(visibleColumn)"
+            ></app-shared-icon>
+
+            <app-shared-filter-selector
+              *ngIf="showFilterSelector(visibleColumn)"
+              [filter]="getFilter(visibleColumn.filter)"
+              (save)="setFilter(visibleColumn)"
+              (delete)="deleteFilter(visibleColumn)"
+              (cancel)="cancelFilter(visibleColumn)"
+              class="shared-table__header-column-filter-selector"
+            ></app-shared-filter-selector>
+          </span>
+          <span
+            *ngIf="isResizingAllowed(visibleColumn)"
+            (mousedown)="resizeStart($event, visibleColumn)"
+            class="shared-table__header-column-resize"
+          >
+          </span>
+        </th>
+      </ng-template>
+      <th class="shared-table__has-row-component-icon" *ngIf="hasRowComponentToggleButton">&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngIf="hasNoData()">
+      <td class="shared-table__no-data" [colSpan]="calculateColSpanForRowComponent()">{{noDataText}}</td>
+    </tr>
+    <ng-template ngFor let-row [ngForOf]="data" let-i="index">
+      <tr
+        class="shared-table__data-row"
+        [ngClass]="getTableDataRowClass(row)"
+        (mousedown)="onSelectionStart($event, i)"
+        (mouseenter)="onSelection(i)"
+      >
+        <td *ngIf="rowsSelectable" class="shared-table__selectable-column">
+          <app-shared-checkbox
+            [checked]="isCheckboxChecked(row)"
+            (valueChanged)="rowsSelectableChange($event, row)"
+          ></app-shared-checkbox>
+        </td>
+        <ng-template ngFor let-visibleColumn [ngForOf]="columns">
+          <td
+            *ngIf="!visibleColumn.dynamicComponent && showColumn(visibleColumn)"
+            class="shared-table__column shared-table__text-column"
+            (click)="onRowClicked(row)"
+          >
+            {{
+            getAttributeFromObject(
+              row,
+              visibleColumn.nameInData ?? '',
+              emptyCellContent,
+              visibleColumn
+            )
+            }}
+          </td>
+          <td
+            *ngIf="visibleColumn.dynamicComponent && showColumn(visibleColumn)"
+            class="shared-table__column shared-table__dynamic-element-column"
+          >
+            <app-shared-dynamic
+              [dynamicComponent]="getDynamicComponent(visibleColumn, row)"
+            ></app-shared-dynamic>
+          </td>
+        </ng-template>
+        <td
+          class="shared-table__has-row-component-icon"
+          *ngIf="showRowComponentToggleButton()"
+          (click)="toggleRowComponent(row)"
+        >
+          <app-shared-icon
+            [icon]="getToggleRowComponentIcon(row)"
+            [iconType]="getIconType()"
+          ></app-shared-icon>
+        </td>
+      </tr>
+      <tr *ngIf="showRowComponentSection(row)" class="shared-table__row-component-section">
+        <td [colSpan]="calculateColSpanForRowComponent()">
+          <ng-template ngFor let-visibleColumn [ngForOf]="columns">
+            <div
+              *ngIf="showStaticInvisibleColumn(visibleColumn)"
+              class="shared-table__invisible-column shared-table__invisible-text-column"
+            >
+              <span
+                *ngIf="columnAllowsFiltering(visibleColumn)"
+                class="shared-table__row-component-column-filter-icon"
+              >
+                <app-shared-icon
+                  [icon]="getFilterIcon()"
+                  [iconType]="getIconType()"
+                  (click)="toggleShowFilterSelector(visibleColumn)"
+                ></app-shared-icon>
+
+                <app-shared-filter-selector
+                  *ngIf="showFilterSelector(visibleColumn)"
+                  [filter]="getFilter(visibleColumn.filter)"
+                  (save)="setFilter(visibleColumn)"
+                  (delete)="deleteFilter(visibleColumn)"
+                  (cancel)="cancelFilter(visibleColumn)"
+                  class="shared-table__row-component-column-filter-selector"
+                ></app-shared-filter-selector>
+              </span>
+              <span
+                *ngIf="columnAllowsSorting(visibleColumn)"
+                class="shared-table__invisible-text-sort-icon"
+                (click)="changeColumnSortOrder(visibleColumn)"
+              >
+                <app-shared-icon
+                  *ngIf="hasNoSortOrder(visibleColumn)"
+                  [icon]="getNoSortOrderIcon()"
+                  [iconType]="getIconType()"
+                ></app-shared-icon>
+                <app-shared-icon
+                  *ngIf="hasAscendingSortOrder(visibleColumn)"
+                  [icon]="getAscendingSortOrderIcon()"
+                  [iconType]="getIconType()"
+                ></app-shared-icon>
+                <app-shared-icon
+                  *ngIf="hasDescendingSortOrder(visibleColumn)"
+                  [icon]="getDescendingSortOrderIcon()"
+                  [iconType]="getIconType()"
+                ></app-shared-icon>
+              </span>
+              <span class="shared-table__invisible-text-column-title">
+                {{visibleColumn.title}}:
+              </span>
+              <span class="shared-table__invisible-text-column-content">
+                {{
+                getAttributeFromObject(
+                  row,
+                  visibleColumn.nameInData ?? '',
+                  emptyCellContent,
+                  visibleColumn
+                )
+                }}
+              </span>
+            </div>
+            <div
+              *ngIf="showDynamicInvisibleColumn(visibleColumn)"
+              class="shared-table__invisible-column shared-table__invisible-dynamic-element-column"
+            >
+              <span
+                *ngIf="columnAllowsFiltering(visibleColumn)"
+                class="shared-table__invisible-dynamic-element-filter-icon"
+              >
+                <app-shared-icon
+                  [icon]="getFilterIcon()"
+                  [iconType]="getIconType()"
+                  (click)="toggleShowFilterSelector(visibleColumn)"
+                ></app-shared-icon>
+
+                <app-shared-filter-selector
+                  *ngIf="showFilterSelector(visibleColumn)"
+                  [filter]="getFilter(visibleColumn.filter)"
+                  (save)="setFilter(visibleColumn)"
+                  (delete)="deleteFilter(visibleColumn)"
+                  (cancel)="cancelFilter(visibleColumn)"
+                  class="shared-table__invisible-dynamic-element-filter-selector"
+                ></app-shared-filter-selector>
+              </span>
+              <span
+                *ngIf="columnAllowsSorting(visibleColumn)"
+                class="shared-table__invisible-dynamic-element-sort-icon"
+                (click)="changeColumnSortOrder(visibleColumn)"
+              >
+                <app-shared-icon
+                  *ngIf="hasNoSortOrder(visibleColumn)"
+                  [icon]="getNoSortOrderIcon()"
+                  [iconType]="getIconType()"
+                ></app-shared-icon>
+                <app-shared-icon
+                  *ngIf="hasAscendingSortOrder(visibleColumn)"
+                  [icon]="getAscendingSortOrderIcon()"
+                  [iconType]="getIconType()"
+                ></app-shared-icon>
+                <app-shared-icon
+                  *ngIf="hasDescendingSortOrder(visibleColumn)"
+                  [icon]="getDescendingSortOrderIcon()"
+                  [iconType]="getIconType()"
+                ></app-shared-icon>
+              </span>
+              <span class="shared-table__invisible-dynamic-element-column-title">
+                {{visibleColumn.title}}:
+              </span>
+              <span class="shared-table__invisible-dynamic-element-column-content">
+                <app-shared-dynamic
+                  [dynamicComponent]="getDynamicComponent(visibleColumn, row)"
+                ></app-shared-dynamic>
+              </span>
+            </div>
+          </ng-template>
+
+          <app-shared-dynamic
+            *ngIf="rowComponent"
+            [dynamicComponent]="getRowComponent(row)"
+            class="shared-table__row-component"
+          ></app-shared-dynamic>
+        </td>
+      </tr>
+    </ng-template>
+  </tbody>
+</table>
+<app-shared-page-browser
+  *ngIf="hasPageBrowser()"
+  [paging]="paging"
+  (pagingChange)="emitPagingData($event)"
+></app-shared-page-browser>

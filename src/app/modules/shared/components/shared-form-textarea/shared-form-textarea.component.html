@@ -1,0 +1,50 @@
+<div>
+  <div class="form--textarea--label-top" *ngIf="isLabelTop()">
+    <div class="form--textarea--label form--label" *ngIf="label">
+      {{label}} <span *ngIf="mandatory">*</span>
+    </div>
+    <div
+      class="form--textarea--description form--description"
+      *ngIf="description"
+    >
+      {{description}}
+    </div>
+  </div>
+  <span class="form--textarea--label-inline" *ngIf="isLabelInline()">
+    <span class="form--textarea--label form--label" *ngIf="label">
+        {{label}} <span *ngIf="mandatory">*</span>
+    </span>
+    &nbsp;
+    <span
+      class="form--textarea--description form--description"
+      *ngIf="description"
+    >
+        {{description}}
+    </span>
+    &nbsp;
+    </span>
+  <textarea
+    #formTextarea="ngModel"
+    [(ngModel)]="value"
+    [placeholder]="label"
+    [name]="name"
+    [disabled]="disabled"
+    [required]="mandatory"
+    [maxlength]="maxLength"
+    [minlength]="minLength"
+    [pattern]="pattern"
+    (ngModelChange)="onChange()"
+    class="form--textarea--element"
+  ></textarea>
+  <div *ngIf="formTextarea.errors && (formTextarea.dirty || formTextarea.touched)">
+    <div [hidden]="!formTextarea.errors.minLength">
+      {{'minLength'}}
+    </div>
+    <div [hidden]="!formTextarea.errors.required">
+      {{'Das Feld darf nicht leer sein'}}
+    </div>
+    <div [hidden]="!formTextarea.errors.pattern">
+      {{patternErrorText}}
+    </div>
+  </div>
+</div>

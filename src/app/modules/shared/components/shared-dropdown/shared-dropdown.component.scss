@@ -1,0 +1,34 @@
+@import "../../../../../assets/scss/colors.scss";
+
+$color--dropdown--border: $color--border;
+$color--dropdown--text--active: $color--text--normal;
+$color--dropdown--text--inactive: $color--text--inactive;
+
+.shared-dropdown {
+  &__component {
+    position: relative;
+  }
+
+  &__toggle-button {
+    cursor: pointer;
+
+    &--is-active {
+      color: $color--dropdown--text--active;
+    }
+
+    &--is-inactive {
+      color: $color--dropdown--text--inactive;
+    }
+  }
+
+  &__dropdown-components {
+    position: absolute;
+    z-index: 1;
+    top: 30px;
+    display: block;
+    padding: 5px;
+    border: 1px solid $color--dropdown--border;
+    background: white;
+    min-width: 250px;
+  }
+}

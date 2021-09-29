@@ -1,0 +1,42 @@
+<form #formReference (submit)="submitButtonPressed($event)" (change)="formChange($event)">
+  <div class="row">
+    <ng-template ngFor let-formSection [ngForOf]="formSections">
+      <fieldset
+        class="form--section"
+        *ngIf="isFormSectionActive(formSection)"
+        [ngClass]="calculateBootstrapWidthForFormSection(formSection)"
+      >
+        <legend *ngIf="formSection.title">{{formSection.title}}</legend>
+        <div class="row">
+          <ng-template ngFor let-formField [ngForOf]="formSection.formFields">
+            <div
+              [ngClass]="calculateBootstrapWidthForFormElement(formField)"
+              class="form--element"
+            >
+              <div>
+                <app-shared-dynamic
+                  [dynamicComponent]="getDynamicComponent(formField)"
+                ></app-shared-dynamic>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </fieldset>
+    </ng-template>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <button *ngIf="hasSubmitButton" class="form--submit-button btn btn-quickline-primary">
+        {{submitButtonText}}
+      </button>
+      <button
+        *ngIf="hasCancelButton"
+        (click)="cancelButtonPressed()"
+        class="form--cancel-button btn btn-quickline-primary"
+      >
+        {{cancelButtonText}}
+      </button>
+    </div>
+  </div>
+</form>

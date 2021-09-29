@@ -1,0 +1,49 @@
+@import "../../../../../assets/scss/colors.scss";
+@import "../../../../../assets/scss/size.scss";
+
+$color--page-browser--selector-border: $color--border;
+$color--page-browser--selector-background: $color--background--selector;
+$color--page-browser--selector-background--active: $color--background--selector-active;
+$color--page-browser--selector-color: $color--text--descriptive;
+$color--page-browser--selector-color-active: $color--background--selector;
+
+.shared-page-browser {
+  &__component {
+    display: block;
+  }
+
+  &__jump-buttons {
+    display: inline-block;
+  }
+
+  &__selector {
+    @include size(auto, 30px);
+
+    min-width: 20px;
+    padding: 0 5px;
+    border: 1px solid $color--page-browser--selector-border;
+    border-radius: 4px;
+    background-color: $color--page-browser--selector-background;
+    color: $color--page-browser--selector-color;
+    margin: 5px 5px 5px 0;
+    display: inline-block;
+    text-align: center;
+    line-height: 30px;
+    font-size: 15px;
+    box-sizing: content-box;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  &__selector.active {
+    background-color: $color--page-browser--selector-background--active;
+    color: $color--page-browser--selector-color-active;
+  }
+
+  &__page-info {
+    padding: 5px;
+    margin: 5px 0 5px 5px;
+  }
+}

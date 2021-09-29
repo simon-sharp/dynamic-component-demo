@@ -1,0 +1,15 @@
+.shared-filter-selector {
+  &__main {
+    padding: 10px;
+  }
+
+  &__filter-operator {
+    width: 180px;
+    margin-bottom: 10px;
+  }
+
+  &__filter-value {
+    width: 180px;
+    margin-bottom: 10px;
+  }
+}

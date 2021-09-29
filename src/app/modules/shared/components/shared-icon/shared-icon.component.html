@@ -1,0 +1,10 @@
+<span *ngIf="isFontAwesomeIcon()">
+  <fa-icon [icon]="getFontAwesomeIcon()"></fa-icon>
+</span>
+<span *ngIf="isBootstrapIcon()">
+  <span
+    class="glyphicon"
+    [ngClass]="getBootstrapIcon()"
+    [title]="description"
+  >*</span>
+</span>

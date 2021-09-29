@@ -1,0 +1,28 @@
+@import "../../../../../assets/scss/colors";
+@import "../../../../../assets/scss/font";
+
+.form {
+  &--radio {
+    &--label {
+      @include quickline-fliesstext-3-desktop;
+    }
+
+    &--description {
+      @include quickline-fliesstext-3-desktop;
+      color: $color--text--secondary;
+    }
+
+    &--element {
+      margin-right: 20px;
+      padding: 10px 15px 10px 15px;
+      border: 1px solid $color--border;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    &--input {
+      margin-left: 5px;
+      vertical-align: text-top;
+    }
+  }
+}

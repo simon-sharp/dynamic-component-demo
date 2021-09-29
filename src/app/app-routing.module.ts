@@ -39,6 +39,12 @@ const routes: Routes = [
     ),
   },
   {
+    path: 'test',
+    loadChildren: () => import('./modules/test/test.module').then(
+      (m) => m.TestModule
+    ),
+  },
+  {
     path: '**',
     component: Core404Component,
   },

@@ -1,0 +1,23 @@
+@import "../../../../../assets/scss/colors";
+@import "../../../../../assets/scss/font";
+
+.form {
+  &--boolean {
+    &--label {
+      @include quickline-fliesstext-3-desktop;
+    }
+
+    &--description {
+      @include quickline-fliesstext-3-desktop;
+      color: $color--text--secondary;
+    }
+
+    &--label {
+      margin-right: 5px;
+    }
+
+    &--value {
+      color: $color--text--clickable;
+    }
+  }
+}

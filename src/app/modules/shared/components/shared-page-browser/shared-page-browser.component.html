@@ -1,0 +1,133 @@
+<div class="shared-page-browser__component">
+  <span class="shared-page-browser__page-info float-right">
+    Zeige {{paging.getSkip()}} bis {{getEndOfDisplayRange()}} von {{paging.getTotal()}}
+  </span>
+
+  <span class="shared-page-browser__jump-buttons">
+    <span
+      (click)="jumpToFirstPage()"
+      *ngIf="paging.getSkip() > 0"
+      class="shared-page-browser__selector shared-page-browser__jump-buttons-first-page"
+    >
+      <app-shared-icon
+        [icon]="getGoToStartIcon()"
+        [description]="'Erste Seite'"
+      ></app-shared-icon>
+    </span>
+
+    <span
+      class="hidden-xs hidden-sm shared-page-browser__selector shared-page-browser__jump-buttons-minus-hundred"
+      (click)="goNPagesBackwards(100)"
+      *ngIf="showMinusNPagesButton(100)"
+    >
+      -100
+    </span>
+
+    <span
+      class="hidden-xs hidden-sm shared-page-browser__selector shared-page-browser__jump-buttons-minus-fifty"
+      (click)="goNPagesBackwards(50)"
+      *ngIf="showMinusNPagesButton(50)"
+    >
+      -50
+    </span>
+
+    <span
+      class="hidden-xs hidden-sm shared-page-browser__selector shared-page-browser__jump-buttons-minus-ten"
+      (click)="goNPagesBackwards(10)"
+      *ngIf="showMinusNPagesButton(10)"
+    >
+      -10
+    </span>
+
+    <span
+      (click)="goNPagesBackwards(1)"
+      *ngIf="showMinusNPagesButton(1)"
+      class="minus-one shared-page-browser__selector"
+    >
+      <app-shared-icon
+        [icon]="getPreviousIcon()"
+        [description]="'Vorherige Seite'"
+      ></app-shared-icon>
+    </span>
+
+    <span
+      class="hidden-xs hidden-sm shared-page-browser__selector shared-page-browser__jump-buttons-previous-page"
+      (click)="goNPagesBackwards(2)"
+      *ngIf="(paging.getSkip() - (2 * paging.getTake())) >= 0"
+    >
+      {{-1 + (paging.getSkip() / paging.getTake())}}
+    </span>
+
+    <span
+      (click)="goNPagesBackwards(1)"
+      *ngIf="(paging.getSkip() - paging.getTake()) >= 0"
+      class="shared-page-browser__selector"
+    >
+      {{(paging.getSkip() / paging.getTake())}}
+    </span>
+
+    <span class="active shared-page-browser__selector">{{1 + (paging.getSkip() / paging.getTake())}}</span>
+
+    <span
+      (click)="goNPagesForward(1)"
+      *ngIf="(paging.getSkip() + paging.getTake()) < paging.getTotal()"
+      class="shared-page-browser__selector"
+    >
+      {{2 + (paging.getSkip() / paging.getTake())}}
+    </span>
+
+    <span
+      class="hidden-xs hidden-sm shared-page-browser__selector shared-page-browser__jump-buttons-next-page"
+      (click)="goNPagesForward(2)"
+      *ngIf="(paging.getSkip() + (2 * paging.getTake())) < paging.getTotal()"
+    >
+      {{3 + (paging.getSkip() / paging.getTake())}}
+    </span>
+
+    <span
+      (click)="goNPagesForward(1)"
+      *ngIf="showPlusNPagesButton(1)"
+      class="shared-page-browser__jump-buttons-plus-one shared-page-browser__selector"
+    >
+      <app-shared-icon
+        [icon]="getNextIcon()"
+        [description]="'Nächste Seite'"
+      ></app-shared-icon>
+    </span>
+
+    <span
+      class="hidden-xs hidden-sm shared-page-browser__selector shared-page-browser__jump-buttons-plus-ten"
+      (click)="goNPagesForward(10)"
+      *ngIf="showPlusNPagesButton(10)"
+    >
+      +10
+    </span>
+
+    <span
+      class="hidden-xs hidden-sm shared-page-browser__selector shared-page-browser__jump-buttons-plus-fifty"
+      (click)="goNPagesForward(50)"
+      *ngIf="showPlusNPagesButton(50)"
+    >
+      +50
+    </span>
+
+    <span
+      class="hidden-xs hidden-sm shared-page-browser__selector shared-page-browser__jump-buttons-plus-hundred"
+      (click)="goNPagesForward(100)"
+      *ngIf="showPlusNPagesButton(100)"
+    >
+      +100
+    </span>
+
+    <span
+      (click)="jumpToLastPage()"
+      *ngIf="paging.getSkip() < (paging.getTotal() - paging.getTake())"
+      class="shared-page-browser__selector shared-page-browser__jump-buttons-last-page"
+    >
+      <app-shared-icon
+        [icon]="getGoToEndIcon()"
+        [description]="'Letzte Seite'"
+      ></app-shared-icon>
+    </span>
+  </span>
+</div>

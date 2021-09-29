@@ -1,0 +1,38 @@
+@import "../../../../../assets/scss/colors";
+@import "../../../../../assets/scss/font";
+
+.form {
+  &--textarea {
+    &--element {
+      @include quickline-fliesstext-3-desktop;
+      width: 100%;
+      border: 1px solid $color--border;
+      border-radius: 4px;
+      background-color: $color--background--element;
+      padding: 10px 15px;
+      color: $color--text--descriptive;
+      margin-bottom: 5px;
+    }
+
+    &--element:focus,
+    &--element:active {
+      color: $color--text--normal;
+    }
+
+    &--element:invalid {
+      border: 2px solid $color--border--invalid;
+      background-color: $color--background--invalid;
+      color: $color--text--invalid;
+    }
+
+    &--label {
+      @include quickline-fliesstext-3-desktop;
+      margin-bottom: 5px;
+    }
+
+    &--description {
+      @include quickline-fliesstext-3-desktop;
+      color: $color--text--secondary;
+    }
+  }
+}

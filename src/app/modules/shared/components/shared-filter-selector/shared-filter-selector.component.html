@@ -1,0 +1,45 @@
+<div class="shared-filter-selector_main">
+  <div>Filter:</div>
+  <div>
+    <select
+      [(ngModel)]="filter.filterOperator"
+      class="shared-filter-selector__filter-operator"
+    >
+      <option value="contains">Enthält</option>
+      <option value="notcontains">Enthält nicht</option>
+      <option value="equals">Ist gleich</option>
+      <option value="notequals">Ist ungleich</option>
+      <option value="beginnswith">Beginnt mit</option>
+      <option value="endswith">Endet mit</option>
+    </select>
+  </div>
+  <div>
+    <input
+      type="text"
+      [(ngModel)]="filter.filterValue"
+      class="shared-filter-selector__filter-value"
+    >
+  </div>
+  <div class="shared-filter-selector__actions">
+    <button
+      class="shared-filter-selector__save-filter"
+      (click)="setFilter()"
+    >
+      Anwenden
+    </button>
+
+    <button
+      class="shared-filter-selector__delete-filter"
+      (click)="deleteFilter()"
+    >
+      Löschen
+    </button>
+
+    <button
+      class="shared-filter-selector__cancel"
+      (click)="cancelEdit()"
+    >
+      Abbrechen
+    </button>
+  </div>
+</div>

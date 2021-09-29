@@ -1,0 +1,13 @@
+@import "../../../../../assets/scss/colors.scss";
+@import "../../../../../assets/scss/font.scss";
+
+$color--text-click--text: $color--text--clickable;
+
+.shared-text-click {
+  &__main {
+    color: $color--text-click--text;
+    display: inline-block;
+    width: 100%;
+    @include quickline-fliesstext-3-desktop;
+  }
+}
