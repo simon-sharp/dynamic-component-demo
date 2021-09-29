@@ -4,6 +4,7 @@ import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
 import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 import {SharedModule} from '../shared/shared.module';
+import {TestRoutingModule} from './test-routing.module';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {SharedModule} from '../shared/shared.module';
     FormsModule,
     FontAwesomeModule,
     SharedModule,
+    TestRoutingModule,
   ]
 })
 export class TestModule {}
