@@ -16,6 +16,8 @@
     <div class="col-12">
       <app-shared-form
         [formSections]="formSections"
+        [formComponentEmitters]="[formDataEmitter]"
+        (formDataEmitter)="formDataEmitted($event)"
       ></app-shared-form>
     </div>
   </div>

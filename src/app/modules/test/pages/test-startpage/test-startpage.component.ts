@@ -1,9 +1,11 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit} from '@angular/core';
 import {TableColumn} from '../../../shared/model/table-column.class';
 import {FormSectionDeclaration} from '../../../shared/model/form-section-declaration.class';
 import {FormFieldDeclaration} from '../../../shared/model/form-field-declaration.class';
 import {SharedFormInputComponent} from '../../../shared/components/shared-form-input/shared-form-input.component';
 import {DynamicComponent} from '../../../shared/model/dynamic-component.class';
+import {SharedTextClickComponent} from '../../../shared/components/shared-text-click/shared-text-click.component';
+import {KeyValuePair} from '../../../shared/model/key-value-pair.class';
 
 @Component({
   selector: 'app-test-startpage',
@@ -15,11 +17,15 @@ export class TestStartpageComponent implements OnInit {
 
   public formSections: FormSectionDeclaration[] = [];
 
+  public movieClickedEmitter = new EventEmitter();
+
+  public formDataEmitter = new EventEmitter();
+
   public ngOnInit(): void {
     this.initTableColumns();
     this.initTableData();
-
     this.initForm();
+    this.initMovieClickedEmitter();
   }
 
   public initTableColumns(): void {
@@ -31,6 +37,20 @@ export class TestStartpageComponent implements OnInit {
       new TableColumn({
         title: 'Nachname',
         nameInData: 'nachname',
+      }),
+      new TableColumn({
+        title: 'Film',
+        nameInData: 'movie',
+        dynamicComponent: new DynamicComponent<SharedTextClickComponent>({
+          componentType: SharedTextClickComponent,
+          outputs: {
+            clickedText: this.movieClickedEmitter
+          }
+        }),
+        dynamicComponentRowInputValues: [
+          new KeyValuePair('text', 'movie'),
+          new KeyValuePair('emitValue', 'movie'),
+        ]
       }),
     ];
   }
@@ -75,6 +95,9 @@ export class TestStartpageComponent implements OnInit {
               inputs: {
                 label: 'Vorname',
                 name: 'vorname',
+              },
+              outputs: {
+                formValueChangedEmitter: this.formDataEmitter,
               }
             }),
             bootstrapWidth: 6,
@@ -85,12 +108,38 @@ export class TestStartpageComponent implements OnInit {
               inputs: {
                 label: 'Nachname',
                 name: 'nachname',
+              },
+              outputs: {
+                formValueChangedEmitter: this.formDataEmitter,
               }
             }),
             bootstrapWidth: 6,
+          }),
+          new FormFieldDeclaration({
+            formComponent: new DynamicComponent<SharedFormInputComponent>({
+              componentType: SharedFormInputComponent,
+              inputs: {
+                label: 'Strasse',
+                name: 'street',
+              },
+              outputs: {
+                formValueChangedEmitter: this.formDataEmitter,
+              }
+            }),
+            bootstrapWidth: 12,
           })
         ]
       })
     ];
+  }
+
+  public initMovieClickedEmitter(): void {
+    this.movieClickedEmitter.subscribe((data) => {
+      console.log('movieClickedEmitter', data);
+    });
+  }
+
+  public formDataEmitted(formData: any): void {
+    console.log('formData', formData);
   }
 }
