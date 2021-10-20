@@ -17,6 +17,7 @@
       <app-shared-form
         [formSections]="formSections"
         [formComponentEmitters]="[formDataEmitter]"
+        [formData]="{xxx:'yyyy'}"
         (formDataEmitter)="formDataEmitted($event)"
       ></app-shared-form>
     </div>

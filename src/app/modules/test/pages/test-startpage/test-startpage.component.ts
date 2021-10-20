@@ -95,6 +95,8 @@ export class TestStartpageComponent implements OnInit {
               inputs: {
                 label: 'Vorname',
                 name: 'vorname',
+                mandatory: true,
+                minLength: 5,
               },
               outputs: {
                 formValueChangedEmitter: this.formDataEmitter,
@@ -121,6 +123,7 @@ export class TestStartpageComponent implements OnInit {
               inputs: {
                 label: 'Strasse',
                 name: 'street',
+                value: 'street11111'
               },
               outputs: {
                 formValueChangedEmitter: this.formDataEmitter,
